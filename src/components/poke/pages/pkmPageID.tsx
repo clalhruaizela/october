@@ -79,7 +79,7 @@ const PokemonPageID = () => {
   };
 
   const handleVarietyChange = (varietyId: number) => {
-    setPokemonVarient(varietyId);
+    console.log(varietyId)
   };
 
   useEffect(() => {
@@ -88,6 +88,7 @@ const PokemonPageID = () => {
         const response = await fetch(data.species.url);
         const speciesData: PokemonData = await response.json();
         setPokemonVarient(speciesData);
+        console.log('Species Data with Varieties:', speciesData);
       }
     };
     fetchData();
@@ -97,7 +98,7 @@ const PokemonPageID = () => {
   if (isError)
     return <div>Error fetching Pokémon details: Pokkemon not found</div>;
 
-  console.log(data);
+  console.log("pokemon",data);
   return (
     <Layout>
       <div className="h-full w-screen lg:mb-28 xl:mb-0">
@@ -146,10 +147,9 @@ const PokemonPageID = () => {
               </p>
             </div>
             <div className="bg-red-300 mb-10">
-              das
-              {data?.varieties && (
-                <PokemonVariety />  //pokemon-species api call a ngai 
-                  varieties={varieties}
+              {pokemonVarient?.varieties?.length > 0 && (
+                <PokemonVariety   
+                  varieties={pokemonVarient?.varieties}
                   onChange={handleVarietyChange}
                 />
               )}

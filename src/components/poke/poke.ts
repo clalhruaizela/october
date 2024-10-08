@@ -49,6 +49,7 @@ export interface Ability {
 export interface Varieties {
   name: string;
   url: string;
+  
 }
 
 export interface Species {

@@ -7,34 +7,50 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+export interface Variety{
+  variety:{
+    name:string
+    url:string
+  }
+}
+
 export interface PokemonVarietiesSelect {
-  varieties: Array<{
-    variety: {
-      name: string;
-      url: string;
-    };
-  }>;
+  // varieties: Array<{
+  //   variety: {
+  //     name: string;
+  //     url: string;
+  //   };
+  // }>;
+  varieties:Variety[]
+  onChange:(selectedVariety:string)=> void
 }
 
 // export interface PokemonVarietiesSelect {
 
 // }
 
-const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({ varieties }) => {
+const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({ varieties ,onChange }) => {
   const [selectedVariety, setSelectedVariety] = useState<string | null>(null);
 
   const hasVarieties = varieties && varieties.length > 0;
 
   const handleSelectChange = (value: string) => {
     setSelectedVariety(value);
+    onChange(value)
   };
 
   useEffect(() => {
-    const defaultVariety = varieties.find((variety) => variety.variety);
-    if (defaultVariety) {
-      setSelectedVariety(defaultVariety.variety.name);
+    if(hasVarieties){
+      const defaultVariety= varieties[0].variety.name
+      setSelectedVariety(defaultVariety)
+      onChange(defaultVariety)
     }
-  }, [varieties]);
+  },[varieties,onChange])
+  //   const defaultVariety = varieties.find((variety) => variety.variety);
+  //   if (defaultVariety) {
+  //     setSelectedVariety(defaultVariety.variety.name);
+  //   }
+  // }, [varieties]);
   return (
     <div>
       {hasVarieties && (
