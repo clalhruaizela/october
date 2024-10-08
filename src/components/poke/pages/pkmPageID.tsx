@@ -17,9 +17,10 @@ import { IoIosArrowDroprightCircle } from "react-icons/io";
 import PkmMdSpecies from "../PkmMdSpecies";
 import PokemonVariety from "../subComp/pokemonVariety";
 import { useEffect, useState } from "react";
+import PokemonShape from "../subComp/PokemonShape";
 
 const fetchPokemonDetails = async (id: number) => {
-  const url = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+  const url = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`); 
 
   if (!url.ok) {
     throw new Error(`An error occurred: ${url.statusText}`);
@@ -49,6 +50,7 @@ const PokemonPageID = () => {
     retry: 0,
     enabled: !!id,
   });
+
   const [pokemonVarient, setPokemonVarient] = useState<PokemonData | null>(
     null
   );
@@ -77,7 +79,7 @@ const PokemonPageID = () => {
   };
 
   const handleVarietyChange = (varietyId: number) => {
-    console.log("Selected variety ID:", varietyId);
+    setPokemonVarient(varietyId);
   };
 
   useEffect(() => {
@@ -95,6 +97,7 @@ const PokemonPageID = () => {
   if (isError)
     return <div>Error fetching Pokémon details: Pokkemon not found</div>;
 
+  console.log(data);
   return (
     <Layout>
       <div className="h-full w-screen lg:mb-28 xl:mb-0">
@@ -142,10 +145,11 @@ const PokemonPageID = () => {
                 #{String(currentId).padStart(4, "0")}
               </p>
             </div>
-            <div>
+            <div className="bg-red-300 mb-10">
+              das
               {data?.varieties && (
-                <PokemonVariety
-                  varieties={data.varieties}
+                <PokemonVariety />  //pokemon-species api call a ngai 
+                  varieties={varieties}
                   onChange={handleVarietyChange}
                 />
               )}
@@ -214,16 +218,12 @@ const PokemonPageID = () => {
                         <div className="text-xl sm:text-2xl">♂︎{""}♀ </div>
                       </div>
                     </div>
+                    <div>
+                      <PokemonShape shapeId="" />
+                    </div>
                   </div>
 
                   <div className="w-full grid grid-cols-6 px- sm:px-20 md:px-1 md:basis-1/3 md:ml-6 xl:ml-0 lg:mt-10 ">
-                    <div className="cols-span-6 ">
-                      {data?.name ? (
-                        <div className="flex flex-col">
-                          <PkmMdSpecies speciesDetails={data.name} />
-                        </div>
-                      ) : null}
-                    </div>
                     <div className=" col-span-6 sm:flex sm:justify-center sm:flex-col  ">
                       <div className="pt-1 text-xl pb-4 ">Type</div>
                       <div className="flex flex-row gap-2  ">
@@ -248,6 +248,7 @@ const PokemonPageID = () => {
                         })}
                       </div>
                     </div>
+
                     <div className="col-span-6  lg:mt-">
                       <div className=" text-xl py-4   sm:pb-1  ">
                         Weaknesses
@@ -263,6 +264,13 @@ const PokemonPageID = () => {
                         {/* </div> */}
                       </div>
                     </div>
+                  </div>
+                  <div className=" mt-3   ">
+                    {data?.name ? (
+                      <div className=" ">
+                        <PkmMdSpecies speciesDetails={data.name} />
+                      </div>
+                    ) : null}
                   </div>
                 </div>
                 <div className="sm:w-full lg:col-span-12">

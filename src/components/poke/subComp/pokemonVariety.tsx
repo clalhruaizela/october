@@ -9,13 +9,16 @@ import {
 
 export interface PokemonVarietiesSelect {
   varieties: Array<{
-    // is_default: boolean;
     variety: {
-      name: string; // Name of the Pokémon variety
-      url: string; // API URL for the variety
+      name: string;
+      url: string;
     };
   }>;
 }
+
+// export interface PokemonVarietiesSelect {
+
+// }
 
 const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({ varieties }) => {
   const [selectedVariety, setSelectedVariety] = useState<string | null>(null);
@@ -54,42 +57,8 @@ const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({ varieties }) => {
           </SelectContent>
         </Select>
       )}
-      {/* {selectedVariety && <p>Selected Variety: {selectedVariety}</p>} */}
     </div>
   );
 };
-
-// const getIdFromUrl = (url: string) => {
-//   const parts = url.split("/");
-//   return parseInt(parts[parts.length - 2], 10);
-// };
-
-// const handleSelect = (varietyName: string, varietyUrl: string) => {
-//   const varietyId = getIdFromUrl(varietyUrl);
-//   setSelectedVariety(varietyName);
-//   onVarietyChange(varietyId);
-// };
-
-//   return varieties.length > 1 ? (
-//     <Select
-//       value={selectedVariety}
-//       onValueChange={(value) => {
-//         const selectedVariety = varieties.find((v) => v.name === value);
-//         if (selectedVariety) {
-//           handleSelect(selectedVariety.name, selectedVariety.url);
-//         }
-//       }}
-//     >
-//       <SelectTrigger className="w-full">
-//         <SelectValue placeholder />
-//       </SelectTrigger>
-//       {varieties.map((variety, index) => (
-//         <SelectItem key={index} value={variety.name}>
-//           {variety.name}
-//         </SelectItem>
-//       ))}
-//     </Select>
-//   ) : null;
-// };
 
 export default PokemonVariety;

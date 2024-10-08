@@ -37,13 +37,18 @@ export interface PokemonData {
   // chain: PokemonEvolution;
   count: number;
   results: Result[];
-  varieties: PokemonVarietiesSelect[];
+  varieties?: Varieties[];
 }
 
 export interface Ability {
   ability: Species;
   is_hidden: boolean;
   slot: number;
+}
+
+export interface Varieties {
+  name: string;
+  url: string;
 }
 
 export interface Species {
@@ -196,29 +201,24 @@ export interface Type {
   type: Species;
 }
 
-// export type PokemonData = {
-//   name: string;
-//   types: { type: { name: string } }[];
-//   id: number;
-//   url: string;
-//   height: number;
-//   weight: number;
-//   sprites: { sprites: { name: string } }[];
-//   species: string;
-//   gender: { genders: { name: string } }[];
-//   abilities: { ability: { name: string } }[];
-// };
-
-// export type PokemonList = {
-//   count: number;
-//   next: string | null;
-//   previous: string | null;
-//   results: PokemonData[];
-// };
+export interface PokemonShapeData {
+  name: string;
+  id: number;
+  awesome_name?: Array<{
+    language: { name: string; url: string };
+    awesome_name: string;
+  }>;
+}
 export interface PokemonSpeciesData {
   name: string;
   id: number;
   habitat: { name: string };
+  pokemon_species: { name: string; url: string };
+  generation: { name: string };
+  varieties: Array<{
+    name: string;
+    url: string;
+  }>;
 }
 
 export interface PokemonStatSlot {

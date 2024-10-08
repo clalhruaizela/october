@@ -1,4 +1,9 @@
-import { PokemonData, PokemonSpeciesData, PokemonStatSlot } from "../poke";
+import {
+  PokemonData,
+  PokemonShapeData,
+  PokemonSpeciesData,
+  PokemonStatSlot,
+} from "../poke";
 
 export const coverToLbs = (weightInHectograms: number): string => {
   const weightInKg = weightInHectograms * 0.1;
@@ -32,4 +37,14 @@ export const fetchPokemonSpecies = async (speciesDetails: string) => {
     throw new Error(`An error occured:${response.statusText}`);
   }
   return (await response.json()) as PokemonSpeciesData;
+};
+
+export const fetchPokemonShape = async (pokemonShapeDetails: string) => {
+  const response = await fetch(
+    `https://pokeapi.co/api/v2/pokemon-shape/${pokemonShapeDetails}`
+  );
+  if (!response.ok) {
+    throw new Error(`An error occured:${response.statusText}`);
+  }
+  return (await response.json()) as PokemonShapeData;
 };

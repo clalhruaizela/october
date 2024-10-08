@@ -17,7 +17,7 @@ const Layout = ({ children }) => {
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavigationMenuTrigger
-                  onClick={() => navigate("/Pokedex")}
+                  onClick={() => navigate("/")}
                   className="flex flex-col sm:my-1 md:my-3"
                 >
                   <div>
