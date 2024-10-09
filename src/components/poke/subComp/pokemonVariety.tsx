@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export interface Variety {
+export interface pokemonVariety {
   pokemon: {
     name: string;
     url: string;
@@ -22,7 +22,7 @@ const capitalize = (str: string): string => {
     .join(" ");
 };
 export interface PokemonVarietiesSelect {
-  varieties: Variety[];
+  varieties: pokemonVariety[];
   onChange: (selectedVariety: string) => void;
 }
 
@@ -34,7 +34,7 @@ const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({
   varieties,
   onChange,
 }) => {
-  console.log("DropD-variesties", varieties);
+  // console.log("DropD-variesties", varieties);
   const [selectedVariety, setSelectedVariety] = useState<string | null>(null);
   const hasVarieties = varieties && varieties.length > 0;
 
@@ -45,13 +45,13 @@ const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({
 
   useEffect(() => {
     if (hasVarieties) {
-      console.log("at 0", varieties[0]);
+      // console.log("at 0", varieties[0]);
       const defaultVariety = varieties[0].pokemon.name;
       setSelectedVariety(defaultVariety);
       onChange(defaultVariety);
     }
   }, [varieties, onChange]);
-  console.log("hasVarieties", hasVarieties);
+  // console.log("hasVarieties", hasVarieties);
   //   const defaultVariety = varieties.find((variety) => variety.variety);
   //   if (defaultVariety) {
   //     setSelectedVariety(defaultVariety.variety.name);

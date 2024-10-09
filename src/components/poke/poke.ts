@@ -1,4 +1,4 @@
-import { PokemonVarietiesSelect } from "./subComp/pokemonVariety";
+// import { PokemonVarietiesSelect } from "./subComp/pokemonVariety";
 
 export interface PokemonList {
   count: number;
@@ -37,17 +37,7 @@ export interface PokemonData {
   // chain: PokemonEvolution;
   count: number;
   results: Result[];
-  varieties?: Varieties[];
-}
-
-export interface VariantData {
-  varieties?: Varieties[];
-}
-
-export interface Ability {
-  ability: Species;
-  is_hidden: boolean;
-  slot: number;
+  varieties: Varieties[];
 }
 
 export interface Varieties {
@@ -58,6 +48,17 @@ export interface Species {
   name: string;
   url: string;
 }
+
+export interface VariantData {
+  varieties: Varieties[];
+}
+
+export interface Ability {
+  ability: Species;
+  is_hidden: boolean;
+  slot: number;
+}
+
 
 export interface Cries {
   latest: string;

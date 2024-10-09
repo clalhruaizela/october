@@ -55,9 +55,6 @@ const PokemonPageID = () => {
     null
   );
 
-  //const speciesData: PokemonData = await response.json();
-  // const [speciesDataX, setSpeciesDataX] = useState<VariantData>();
-
   const prevId = currentId === MIN_POKEMON_ID ? MAX_POKEMON_ID : currentId - 1;
   const nextId = currentId === MAX_POKEMON_ID ? MIN_POKEMON_ID : currentId + 1;
 
@@ -81,21 +78,54 @@ const PokemonPageID = () => {
     navigate(`/pokemon/${nextId}`);
   };
 
+  // const handleVarietyChange = async (selectedVariety: string) => {
+  //   if (pokemonVarient) {
+  //     const selectedVarietyData = pokemonVarient?.varieties?.find(
+  //       (pokemon) => pokemon.pokemon.url === selectedVariety
+  //     );
+  //     console.log("selectedVarietyData-Main", selectedVarietyData);
+  //     console.log("pokemonVarient-Main", pokemonVarient);
+  //     if (selectedVarietyData) {
+  //       const response = await fetch(selectedVarietyData.pokemon.name);
+  //       const varietyDetails: PokemonData = await response.json();
+  //       setPokemonVarient(varietyDetails);
+        
+  //       console.log("handleVarietyDetails-Main", varietyDetails);
+  //     }
+  //     console.log()
+  //   }
+  // };
+
   const handleVarietyChange = async (selectedVariety: string) => {
+    console.log("handleVarietyChange called with", selectedVariety);
+    
     if (pokemonVarient) {
+      console.log("pokemonVarient is defined", pokemonVarient);
+  
       const selectedVarietyData = pokemonVarient?.varieties?.find(
-        (variety) => variety.pokemon.name === selectedVariety
+        (pokemon) => pokemon.pokemon.url === selectedVariety
       );
-      console.log("selectedVarietyData-Main", selectedVarietyData);
-      console.log("pokemonVarient-Main", pokemonVarient);
+      console.log("selectedVarietyData", selectedVarietyData);
+      
       if (selectedVarietyData) {
-        const response = await fetch(selectedVarietyData.pokemon.url);
+        console.log("selectedVarietyData found", selectedVarietyData);
+        
+        const response = await fetch(selectedVarietyData.pokemon.name);
+        console.log("Fetched data from", selectedVarietyData.pokemon.name);
+        
         const varietyDetails: PokemonData = await response.json();
+        console.log("Parsed varietyDetails", varietyDetails);
+        
         setPokemonVarient(varietyDetails);
-        console.log("varietyDetails-Main", varietyDetails);
+        console.log("Updated pokemonVarient with", varietyDetails);
+      } else {
+        console.log("selectedVarietyData not found for", selectedVariety);
       }
+    } else {
+      console.log("pokemonVarient is not defined");
     }
   };
+  
 
   // const handleVarietyChange = (varietyId: number) => {
   //   console.log(varietyId);
@@ -104,12 +134,13 @@ const PokemonPageID = () => {
   useEffect(() => {
     const fetchData = async () => {
       if (data) {
+        // console.log("useEffect-Data",data)
         const response = await fetch(data.species.url);
         const speciesData: PokemonData = await response.json();
-        console.log("speciesData-Main", speciesData);
+        // console.log("speciesData-Main", speciesData);
         setPokemonVarient(speciesData);
         // setSpeciesDataX(speciesData as VariantData);
-        console.log("Species Data with Varieties:", speciesData);
+        // console.log("Species Data with Varieties:", speciesData);
       }
     };
     fetchData();
@@ -118,8 +149,6 @@ const PokemonPageID = () => {
   if (isLoading) return "Loading";
   if (isError)
     return <div>Error fetching Pokémon details: Pokkemon not found</div>;
-
-  console.log("pokemon", pokemonVarient);
   return (
     <Layout>
       <div className="h-full w-screen lg:mb-28 xl:mb-0">
