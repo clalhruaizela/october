@@ -7,45 +7,51 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export interface Variety{
-  variety:{
-    name:string
-    url:string
-  }
+export interface Variety {
+  pokemon: {
+    name: string;
+    url: string;
+  };
 }
 
+const capitalize = (str: string): string => {
+  const updatedstr = str.replace(/-/g, " ");
+  return updatedstr
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+};
 export interface PokemonVarietiesSelect {
-  // varieties: Array<{
-  //   variety: {
-  //     name: string;
-  //     url: string;
-  //   };
-  // }>;
-  varieties:Variety[]
-  onChange:(selectedVariety:string)=> void
+  varieties: Variety[];
+  onChange: (selectedVariety: string) => void;
 }
 
 // export interface PokemonVarietiesSelect {
 
 // }
 
-const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({ varieties ,onChange }) => {
+const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({
+  varieties,
+  onChange,
+}) => {
+  console.log("DropD-variesties", varieties);
   const [selectedVariety, setSelectedVariety] = useState<string | null>(null);
-
   const hasVarieties = varieties && varieties.length > 0;
 
   const handleSelectChange = (value: string) => {
     setSelectedVariety(value);
-    onChange(value)
+    onChange(value);
   };
 
   useEffect(() => {
-    if(hasVarieties){
-      const defaultVariety= varieties[0].variety.name
-      setSelectedVariety(defaultVariety)
-      onChange(defaultVariety)
+    if (hasVarieties) {
+      console.log("at 0", varieties[0]);
+      const defaultVariety = varieties[0].pokemon.name;
+      setSelectedVariety(defaultVariety);
+      onChange(defaultVariety);
     }
-  },[varieties,onChange])
+  }, [varieties, onChange]);
+  console.log("hasVarieties", hasVarieties);
   //   const defaultVariety = varieties.find((variety) => variety.variety);
   //   if (defaultVariety) {
   //     setSelectedVariety(defaultVariety.variety.name);
@@ -53,21 +59,23 @@ const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({ varieties ,onChange 
   // }, [varieties]);
   return (
     <div>
+      {hasVarieties && <>hi</>}
       {hasVarieties && (
         <Select
           value={selectedVariety || ""}
           onValueChange={handleSelectChange}
         >
-          <SelectTrigger className="my-2 w-full rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300">
-            <SelectValue placeholder="Select a variety" />
+          <SelectTrigger className="my-2 w-full rounded-md  bg-black text-white hover:bg-gray-300">
+            <SelectValue />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className="bg-gray-600 text-white">
             {varieties.map((variety) => (
               <SelectItem
-                key={variety.variety.name}
-                value={variety.variety.name}
+                key={variety.pokemon.name}
+                value={variety.pokemon.name}
+                onClick={() => onChange(variety.pokemon.name)}
               >
-                {variety.variety.name}
+                {capitalize(variety.pokemon.name)}
               </SelectItem>
             ))}
           </SelectContent>

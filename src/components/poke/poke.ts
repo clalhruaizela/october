@@ -40,6 +40,10 @@ export interface PokemonData {
   varieties?: Varieties[];
 }
 
+export interface VariantData {
+  varieties?: Varieties[];
+}
+
 export interface Ability {
   ability: Species;
   is_hidden: boolean;
@@ -47,9 +51,7 @@ export interface Ability {
 }
 
 export interface Varieties {
-  name: string;
-  url: string;
-  
+  pokemon: Species;
 }
 
 export interface Species {
