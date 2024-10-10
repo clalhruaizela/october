@@ -50,11 +50,11 @@ const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({
       const defaultVariety = varieties.find(
         (pokemon) => pokemon.pokemon.name === selectedPokemonName
       );
-      console.log("defaultVariety", defaultVariety);
+      // console.log("defaultVariety", defaultVariety);
       setSelectedVariety(defaultVariety?.pokemon?.name || null);
       // setIsDefaultSet(true);
     }
-  }, [varieties]);
+  }, [varieties,selectedPokemonName]);
 
   return (
     <div>
@@ -63,7 +63,7 @@ const PokemonVariety: React.FC<PokemonVarietiesSelect> = ({
           value={selectedVariety || ""}
           onValueChange={handleSelectChange}
         >
-          <SelectTrigger className="my-2 w-full rounded-md  bg-black text-white hover:bg-gray-300">
+          <SelectTrigger className="my-4 w-full rounded-md  bg-black text-white font-semibold hover:bg-gray-300">
             <SelectValue
               placeholder={capitalize(selectedVariety || "Select a variety")}
             />

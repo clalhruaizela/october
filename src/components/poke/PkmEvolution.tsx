@@ -54,7 +54,7 @@ const PkmEvolution = ({ pokemonSpec }: { pokemonSpec: number }) => {
     return (
       <div
         key={species.name}
-        className="sm:flex sm:items-center sm:justify-center sm:w-full lg:flex lg:justify-center lg:items-center lg:mb-2 lg:basis-1/3 lg:pl-4"
+        className="sm:flex sm:items-center sm:justify-center sm:w-full lg:flex lg:justify-center lg:items-center lg:mb-2 lg:basis-1/3 lg:pl-0"
       >
         <div className="items-center flex-col lg:flex-row flex lg:basis-1/3 mb-5  lg:justify-evenly  lg:w-full gap-3 text-white sm:ml sm:w-9/12">
           <EvoImageCard pokemonId={pokemonId} speciesName={species.name} />
