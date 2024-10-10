@@ -71,10 +71,10 @@ const PokeCard = ({ pokemonUrl }: { pokemonUrl: string }) => {
                   />
                 </div>
                 <div className="w-full">
-                  <h3 className="text-xl flex pt-2 pl-2 md:pl-0 md:pb-2 justify-start">
+                  <h3 className="text-xl flex pt-2 pb-2 md:pl-0 md:pb-2 justify-start">
                     {capitalize(data?.name || "")}
                   </h3>
-                  <div className="flex flex-row ml-6 md:ml-0">
+                  <div className="flex flex-row  md:ml-0">
                     {data?.types.map((color) => {
                       return (
                         <div key={color.type.name}>
@@ -117,7 +117,7 @@ const PokeCard = ({ pokemonUrl }: { pokemonUrl: string }) => {
                         ?.front_default || ""
                     }
                     alt={data?.name || ""}
-                    className="sm:mb-4 w-56 mr-2 h-64  rounded-md sm:mr-3"
+                    className="sm:mb-4 w-56 mr-2 h-auto  rounded-md sm:mr-3"
                   />
                 </div>
                 <div>

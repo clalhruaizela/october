@@ -42,6 +42,7 @@ export interface PokemonData {
 
 export interface Varieties {
   pokemon: Species;
+  is_default: boolean;
 }
 
 export interface Species {
@@ -49,16 +50,15 @@ export interface Species {
   url: string;
 }
 
-export interface VariantData {
-  varieties: Varieties[];
-}
+// export interface VariantData {
+//   varieties: Varieties[];
+// }
 
 export interface Ability {
   ability: Species;
   is_hidden: boolean;
   slot: number;
 }
-
 
 export interface Cries {
   latest: string;

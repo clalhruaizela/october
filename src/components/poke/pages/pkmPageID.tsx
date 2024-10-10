@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import PokemonChartDT from "../PkmChart";
 import PkmMdHeight from "../pkmMdHeight";
 import PokemonTypesWeakness from "../PkmMdType";
-import { PokemonData, VariantData } from "../poke";
+import { PokemonData } from "../poke";
 import { getTypeColors } from "../utilities/typeColor";
 import { convertToFeet } from "../utilities/convertToFeet";
 import PkmEvolution from "../PkmEvolution";
@@ -29,8 +29,11 @@ const fetchPokemonDetails = async (id: number) => {
 };
 
 const capitalize = (str: string): string => {
-  const [first, ...rest] = str;
-  return first.toLocaleUpperCase() + rest.join("");
+  const updatedstr = str.replace(/-/g, " ");
+  return updatedstr
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 };
 
 const MAX_POKEMON_ID = 1025;
@@ -78,74 +81,54 @@ const PokemonPageID = () => {
     navigate(`/pokemon/${nextId}`);
   };
 
-  // const handleVarietyChange = async (selectedVariety: string) => {
-  //   if (pokemonVarient) {
-  //     const selectedVarietyData = pokemonVarient?.varieties?.find(
-  //       (pokemon) => pokemon.pokemon.url === selectedVariety
-  //     );
-  //     console.log("selectedVarietyData-Main", selectedVarietyData);
-  //     console.log("pokemonVarient-Main", pokemonVarient);
-  //     if (selectedVarietyData) {
-  //       const response = await fetch(selectedVarietyData.pokemon.name);
-  //       const varietyDetails: PokemonData = await response.json();
-  //       setPokemonVarient(varietyDetails);
-        
-  //       console.log("handleVarietyDetails-Main", varietyDetails);
-  //     }
-  //     console.log()
-  //   }
-  // };
-
   const handleVarietyChange = async (selectedVariety: string) => {
     console.log("handleVarietyChange called with", selectedVariety);
-    
+
     if (pokemonVarient) {
       console.log("pokemonVarient is defined", pokemonVarient);
-  
+
       const selectedVarietyData = pokemonVarient?.varieties?.find(
-        (pokemon) => pokemon.pokemon.url === selectedVariety
+        (pokemon) => pokemon.pokemon.name === selectedVariety
       );
-      console.log("selectedVarietyData", selectedVarietyData);
-      
+      // console.log("selectedVarietyData", selectedVarietyData);
       if (selectedVarietyData) {
-        console.log("selectedVarietyData found", selectedVarietyData);
-        
-        const response = await fetch(selectedVarietyData.pokemon.name);
-        console.log("Fetched data from", selectedVarietyData.pokemon.name);
-        
-        const varietyDetails: PokemonData = await response.json();
-        console.log("Parsed varietyDetails", varietyDetails);
-        
-        setPokemonVarient(varietyDetails);
-        console.log("Updated pokemonVarient with", varietyDetails);
+        if (!selectedVarietyData?.is_default) {
+          // console.log("selectedVarietyData found", selectedVarietyData);
+          const response = await fetch(selectedVarietyData.pokemon.url);
+          // console.log("Fetched data from", selectedVarietyData.pokemon.url);
+          const varietyDetails: PokemonData = await response.json();
+          // console.log("Fetch varietyDetails", varietyDetails);
+          // setPokemonVarient(varietyDetails);
+          navigate(`/pokemon/${varietyDetails.id}`);
+          // console.log("Updated pokemonVarient with", varietyDetails);
+        } else {
+          console.log("selectedVarietyData not found for", selectedVariety);
+          navigate(`/pokemon/${pokemonVarient.id}`);
+        }
       } else {
-        console.log("selectedVarietyData not found for", selectedVariety);
+        console.log("pokemonVarient is not defined");
       }
-    } else {
-      console.log("pokemonVarient is not defined");
     }
   };
-  
-
-  // const handleVarietyChange = (varietyId: number) => {
-  //   console.log(varietyId);
-  // };
-
+  // console.log("pokemonVarient", pokemonVarient);
+  console.log(data);
   useEffect(() => {
     const fetchData = async () => {
       if (data) {
-        // console.log("useEffect-Data",data)
+        console.log("Data available:", data);
         const response = await fetch(data.species.url);
+        console.log("Fetching species data from:", data.species.url);
         const speciesData: PokemonData = await response.json();
-        // console.log("speciesData-Main", speciesData);
+        console.log("Species data fetched:", speciesData);
         setPokemonVarient(speciesData);
-        // setSpeciesDataX(speciesData as VariantData);
-        // console.log("Species Data with Varieties:", speciesData);
+      } else {
+        console.log("No data available");
       }
     };
     fetchData();
   }, [data]);
 
+  console.log("pokemon", data);
   if (isLoading) return "Loading";
   if (isError)
     return <div>Error fetching Pokémon details: Pokkemon not found</div>;
@@ -189,27 +172,22 @@ const PokemonPageID = () => {
               </div>
             </div>
 
-            <div className=" flex flex-col items-center text-2xl pb-4 xl:text-3xl justify-center sm:flex-row sm:gap-2 sm:font-semibold xl:w- xl">
+            <div className="flex justify-center flex-col items-center">
               {/* {capitalize(data!.name)} */}
-              <p className="xl:text-4xl   ">{capitalize(data!.name)}</p>{" "}
-              <p className="text-gray-500 ">
-                {" "}
-                #{String(currentId).padStart(4, "0")}
-              </p>
+              <div className=" flex flex-col items-center text-2xl pb-4 xl:text-3xl justify-center sm:flex-row sm:gap-2 sm:font-semibold xl:w- xl">
+                <p className="xl:text-4xl   ">{capitalize(data!.name)}</p>{" "}
+                <p className="text-gray-500 ">
+                  {" "}
+                  #{String(currentId).padStart(4, "0")}
+                </p>
+              </div>
               <div className=" mb-10 w-52">
-                {/* {pokemonVarient?.varieties && (
-                  <div>
-                    <PokemonVariety
-                      varieties={pokemonVarient?.varieties}
-                      onChange={handleVarietyChange}
-                    />
-                  </div>
-                )} */}
                 {pokemonVarient?.varieties &&
                   pokemonVarient.varieties.length > 0 && (
                     <PokemonVariety
                       varieties={pokemonVarient.varieties}
                       onChange={handleVarietyChange}
+                      selectedPokemonName={data!.name}
                     />
                   )}
                 {(!pokemonVarient?.varieties ||
@@ -237,7 +215,7 @@ const PokemonPageID = () => {
                   </div>
                 </div>
                 <div className="lg:col-span-6 ">
-                  <div className=" bg-blue-400 my-4 w-80 py-4 gap-6 2xl:gap-2 sm:w-9/12 md:w-11/12 md:ml-6 xl:ml-0 lg:w-11/12 lg:py-8 sm:py-4 sm:rounded-md rounded-sm grid grid-cols-6 lg:mt-4 ">
+                  <div className=" bg-blue-400 my-4 w-80 py-4 gap-6 2xl:gap-2 sm:ml-16 sm:w-9/12 md:w-11/12 md:ml-6 xl:ml-0 lg:w-11/12 lg:py-8 sm:py-4 sm:rounded-md rounded-sm grid grid-cols-6 lg:mt-4 ">
                     <div className="text-black  col-span-6 lg:col-span-3 2xl:ml-20">
                       <div className="flex flex-col justify-center items-center">
                         <div className=" sm:py-1 text-white text-lg">
